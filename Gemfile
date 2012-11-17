@@ -6,10 +6,10 @@ gem 'rails', '3.2.7'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'mysql2'
-
 gem 'foreigner'
-
 gem 'httparty'
+gem 'bcrypt-ruby'
+gem 'delayed_job_active_record'
 
 # Gems used only for assets and not required
 # in production environments by default.

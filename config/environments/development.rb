@@ -36,5 +36,6 @@ Zebra::Application.configure do
   config.assets.debug = true
 
   STRIPE_SECRET_KEY = 'sk_test_UisDUYaMMhJTJCCxPEiiPlF0'
-  STRIPE_CLIENT_ID  = 'pk_test_AHE3mjCuA2npYPubBLAj5V6k'
+  STRIPE_CLIENT_ID  = 'ca_0kgO0x5BM0ew6wLCXuoJFxLNI4vDSiky'
+  STRIPE_PUBLISHABLE_KEY = 'pk_test_AHE3mjCuA2npYPubBLAj5V6k'
 end

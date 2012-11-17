@@ -1,4 +1,15 @@
 Zebra::Application.routes.draw do
+
+  resources :owners
+
+  match 'login' => 'auth#login'
+  match 'signup' => 'auth#signup'
+  namespace :stripe, :path => 'stripe' do
+    match 'setup/:id' => 'oauth#setup'
+    match 'pending/:id' => 'oauth#pending'
+    match 'redirect' => 'oauth#redirect'
+  end
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -24,7 +35,6 @@ Zebra::Application.routes.draw do
   #       get 'sold'
   #     end
   #   end
-
   # Sample resource route with sub-resources:
   #   resources :products do
   #     resources :comments, :sales
