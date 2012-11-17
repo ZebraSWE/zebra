@@ -1,6 +1,6 @@
 class CreateOwnerTable < ActiveRecord::Migration
   def up
-    create_table  :owner do |t|
+    create_table  :owners do |t|
       t.string    :name
       t.string    :email
       t.string    :company
@@ -10,10 +10,10 @@ class CreateOwnerTable < ActiveRecord::Migration
 
       t.timestamps
     end
-    add_index :owner, :key
+    add_index :owners, :key
   end
 
   def down
-    drop_table :owner
+    drop_table :owners
   end
 end

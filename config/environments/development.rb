@@ -34,4 +34,7 @@ Zebra::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  STRIPE_SECRET_KEY = 'sk_test_UisDUYaMMhJTJCCxPEiiPlF0'
+  STRIPE_CLIENT_ID  = 'pk_test_AHE3mjCuA2npYPubBLAj5V6k'
 end

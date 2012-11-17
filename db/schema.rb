@@ -11,9 +11,9 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121117113348) do
+ActiveRecord::Schema.define(:version => 20121117123701) do
 
-  create_table "owner", :force => true do |t|
+  create_table "owners", :force => true do |t|
     t.string   "name"
     t.string   "email"
     t.string   "company"
@@ -23,6 +23,18 @@ ActiveRecord::Schema.define(:version => 20121117113348) do
     t.datetime "updated_at",               :null => false
   end
 
-  add_index "owner", ["key"], :name => "index_owner_on_key"
+  add_index "owners", ["key"], :name => "index_owners_on_key"
+
+  create_table "stripe_accounts", :force => true do |t|
+    t.string  "auth_token"
+    t.string  "access_token"
+    t.string  "refresh_token"
+    t.string  "state"
+    t.integer "owner_id",      :null => false
+  end
+
+  add_index "stripe_accounts", ["owner_id"], :name => "index_stripe_accounts_on_owner_id", :unique => true
+
+  add_foreign_key "stripe_accounts", "owners", :name => "stripe_accounts_owner_id_fk"
 
 end
