@@ -1,0 +1,15 @@
+<%= form_for @owner do |f| %>
+  <%= f.label :email %>
+  <%= f.text_field :email %><br />
+
+  <%= f.label :password %>
+  <%= f.password_field :password %><br />
+
+  <%= f.label :name %>
+  <%= f.text_field :name %><br />
+
+  <%= f.label :company %>
+  <%= f.text_field :company %><br />
+
+  <%= f.submit "Sign Up!" %>
+<% end %>

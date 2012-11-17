@@ -3,7 +3,9 @@ Zebra::Application.routes.draw do
   resources :owners
 
   match 'login' => 'auth#login'
+  match 'owner/login' => 'owners#login'
   match 'signup' => 'auth#signup'
+
   namespace :stripe, :path => 'stripe' do
     match 'setup/:id' => 'oauth#setup', :as => 'stripe_oauth_setup'
     match 'pending/:id' => 'oauth#pending', :as => 'stripe_oauth_pending'
@@ -11,6 +13,8 @@ Zebra::Application.routes.draw do
     match 'done/:id' => 'oauth#done', :as => 'stripe_oauth_done'
     match 'cancel/:id' => 'oauth#cancel', :as => 'stripe_oauth_cancel'
   end
+
+  root :to => 'welcome#index'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

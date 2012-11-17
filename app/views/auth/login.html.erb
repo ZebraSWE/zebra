@@ -1,0 +1,10 @@
+<form method='POST' action='/owner/login'>
+  <%= csrf_meta_tag %>
+  <label for="owner_email">Email</label>
+  <input id="owner_email" name="owner[email]" size="30" type="text" /><br />
+
+  <label for="owner_password">Password</label>
+  <input id="owner_password" name="owner[password]" size="30" type="password" /><br />
+
+  <input name="commit" type="submit" value="Log In!" />
+</form>
