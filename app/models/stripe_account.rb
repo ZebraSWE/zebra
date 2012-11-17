@@ -9,23 +9,22 @@ class StripeAccount < ActiveRecord::Base
   validates_uniqueness_of :owner_id
   validates_uniqueness_of :state, :is => 40, :allow_nil => true
 
-  def self.do_get_access_token(auth_token)
-    response = HTTParty.post(access_uri(auth_token), :headers => {'Authorization' => "Bearer #{STRIPE_SECRET_KEY}"})
+  def do_get_access_token
+    response = HTTParty.post(access_uri, :headers => {'Authorization' => "Bearer #{STRIPE_SECRET_KEY}"})
     payload = JSON.parse response.body
-    Rails.logger.info "HJM #{response}"
     if (error = payload[:error]).present?
       raise ErrorFetchingAccessToken.new("#{error} - #{payload[:error_description]}")
     else
-      self.access_token = payload[:access_token]
-      self.refresh_token = payload[:refresh_token]
-      self.publishable_key = payload[:publishable_key]
+      self.access_token = payload['access_token']
+      self.refresh_token = payload['refresh_token']
+      self.publishable_key = payload['stripe_publishable_key']
       self.save!
     end
   end
 
-  def self.access_uri(auth_token)
+  def access_uri
     params = {
-      :code => auth_token,
+      :code => self.auth_token,
       :grant_type => 'authorization_code'
     }
     ACCESS_URL + '?' + params.to_query
@@ -35,7 +34,7 @@ class StripeAccount < ActiveRecord::Base
     if Rails.env.test?
       do_get_access_token(self.auth_token)
     else
-      StripeOauthJob.new.enqueue(self.auth_token)
+      Delayed::Job.enqueue(StripeOauthJob.new(self.id))
     end
   end
 

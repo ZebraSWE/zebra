@@ -15,16 +15,17 @@ class Stripe::OauthController < ApplicationController
     if (error = params[:error]).present?
       if error == 'access_denied'
         # user cancelled the auth
+        flash[:info] = "We need you to sign up to Stripe for this to work..."
+        redirect_to root_url
       else
-        # unexpected error
         raise UnexpectedErrorInResponse.new("#{error} - #{params[:error_description]}")
       end
     else
-      # Normal response
-      # fire off a job
+      @stripe_account = @owner.stripe_account
+      @stripe_account.auth_token = params[:code]
+      @stripe_account.save!
       @owner.stripe_account.get_access_token
-      # redirect to pending
-      redirect_to :pending, :id => @owner_id
+      redirect_to :action => :pending, :id => @owner_id
     end
   end
 
@@ -32,7 +33,7 @@ class Stripe::OauthController < ApplicationController
     if @owner.stripe_account.nil?
       redirect_to :setup, :id => @owner_id
     elsif @owner.stripe_account.enabled?
-      redirect_to :done, :id => @owner_id
+      redirect_to :action => :done, :id => @owner_id
     end
   end
 

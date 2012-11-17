@@ -5,11 +5,11 @@ Zebra::Application.routes.draw do
   match 'login' => 'auth#login'
   match 'signup' => 'auth#signup'
   namespace :stripe, :path => 'stripe' do
-    match 'setup/:id' => 'oauth#setup'
-    match 'pending/:id' => 'oauth#pending'
+    match 'setup/:id' => 'oauth#setup', :as => 'stripe_oauth_setup'
+    match 'pending/:id' => 'oauth#pending', :as => 'stripe_oauth_pending'
     match 'redirect' => 'oauth#redirect'
-    match 'done/:id' => 'oauth#done'
-    match 'cancel/:id' => 'oauth#cancel'
+    match 'done/:id' => 'oauth#done', :as => 'stripe_oauth_done'
+    match 'cancel/:id' => 'oauth#cancel', :as => 'stripe_oauth_cancel'
   end
 
   # The priority is based upon order of creation:

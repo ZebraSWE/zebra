@@ -1,17 +1,18 @@
 class StripeOauthJob < Struct.new(:stripe_account_id)
   def perform
-    logger = Delayed::Worker.logger
+    logger = Rails.logger
 
     begin
       stripe_account = StripeAccount.find(stripe_account_id)
     rescue ActiveRecord::RecordNotFound => ex
-      logger.error("Failed to find stripe account with id #{stripe_account_id}"
+      logger.error("Failed to find stripe account with id #{stripe_account_id}")
+      raise ex
     end
 
     logger.info "#{Time.new.strftime("%b %d %Y %H:%M:%S")}: [JOB] Retrieving OAuth access token for #{stripe_account.owner.name}."
 
     runtime = Benchmark.realtime do
-      stripe_account.do_fetch_token(logger)
+      stripe_account.do_get_access_token
     end
   end
 
