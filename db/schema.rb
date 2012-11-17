@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121117154307) do
+ActiveRecord::Schema.define(:version => 20121117165324) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -46,7 +46,8 @@ ActiveRecord::Schema.define(:version => 20121117154307) do
     t.string  "access_token"
     t.string  "refresh_token"
     t.string  "state"
-    t.integer "owner_id",      :null => false
+    t.integer "owner_id",        :null => false
+    t.string  "publishable_key"
   end
 
   add_index "stripe_accounts", ["owner_id"], :name => "index_stripe_accounts_on_owner_id", :unique => true

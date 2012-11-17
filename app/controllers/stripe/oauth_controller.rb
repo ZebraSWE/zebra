@@ -5,13 +5,13 @@ class Stripe::OauthController < ApplicationController
   before_filter :set_owner
 
   def setup
-    @owner = Owner.find(params[:id])
     @owner.create_stripe_account
     redirect_to @owner.stripe_account.auth_uri
     session[:user] = @owner.key
   end
 
   def redirect
+    session[:user] = nil
     if (error = params[:error]).present?
       if error == 'access_denied'
         # user cancelled the auth
@@ -24,8 +24,23 @@ class Stripe::OauthController < ApplicationController
       # fire off a job
       @owner.stripe_account.get_access_token
       # redirect to pending
-      redirect_to :pending
+      redirect_to :pending, :id => @owner_id
     end
+  end
+
+  def pending
+    if @owner.stripe_account.nil?
+      redirect_to :setup, :id => @owner_id
+    elsif @owner.stripe_account.enabled?
+      redirect_to :done, :id => @owner_id
+    end
+  end
+
+  def done
+  end
+
+  def cancel
+    @owner.stripe_account.destroy
   end
 
   private
@@ -35,6 +50,6 @@ class Stripe::OauthController < ApplicationController
   end
 
   def set_owner
-    @owner = Owner.find(owner_id)
+    @owner = Owner.find_by_key(owner_id)
   end
 end

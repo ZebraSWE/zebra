@@ -8,6 +8,8 @@ Zebra::Application.routes.draw do
     match 'setup/:id' => 'oauth#setup'
     match 'pending/:id' => 'oauth#pending'
     match 'redirect' => 'oauth#redirect'
+    match 'done/:id' => 'oauth#done'
+    match 'cancel/:id' => 'oauth#cancel'
   end
 
   # The priority is based upon order of creation:
